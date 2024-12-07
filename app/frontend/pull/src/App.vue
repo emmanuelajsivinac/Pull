@@ -9,7 +9,13 @@ import DashboardBase from './components/DashboardBase.vue'
 </template>
 
 <style scoped>
-.main-container{
-  padding: 20px;
-}
+  .main-container {
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
