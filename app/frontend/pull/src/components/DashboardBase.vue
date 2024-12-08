@@ -1,20 +1,20 @@
 <template>
   <div class="dashboard-main-container">
     <div class="header-section">
-      <label>pull</label>
+      <label></label>
     </div>
     <div class="content-section">
-      <ConverterSection />
+      <ConverterSectionBase />
     </div>
   </div>
 </template>
 
 <script>
-import ConverterSection from './ConverterSection.vue'
+import ConverterSectionBase from './ConverterSectionBase.vue'
 export default {
     name: 'DashboardBase',
     components:{
-      ConverterSection,
+      ConverterSectionBase,
     }
 };
 </script>
@@ -34,24 +34,23 @@ export default {
 .header-section{
   box-sizing: border-box;
   width: 100%;
-  height: 20%;
+  height: 15%;
   min-height: 100px;
   margin: 0;
-  padding-top: 30px;
   padding-left: 50px;
   display: flex;
   align-items: center;
 }
 
 .header-section, label{
-  font-size: xx-large;
+  font-size: x-large;
   font-weight: 500;
 }
 
 
 .content-section{
   width: 100%;
-  height: 80%;
+  height: 85%;
   min-height: 400px;
   margin: 0;
   padding: 0;

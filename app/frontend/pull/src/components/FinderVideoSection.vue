@@ -1,45 +1,57 @@
 <template>
-  <div class="content-main-container">
-    <div class="header-section">
-      <div class="title">
-        <p>{{ title }}</p>
-      </div>
-    <div class="subtitle">
-      <p>{{ subtitle }}</p>
-    </div>
-    </div>
+  <div class="finder-section">
     <div class="link-section">
       <div class="link-entry">
         <input placeholder="Enter a YouTube link" class="link-input">
       </div>
       <button class="search-video-button" @click="increaseProgress">Search Video</button>
     </div>
+    <ModalBase 
+      v-if="showModal"
+      :isOpen="showModal"
+      title= ""
+      message="¿Estás seguro de realizar esta acción?"
+      @close="closeModal"
+      @confirm="confirmChange">
+      <div class="video-found-section">
+        <h2>{{ internalHeaderMessage }}</h2>
+        <div class="video-found-image-preview">
+        </div>
+        <div class="video-found-title">
+          <label>{{ videoFoundTitle }}</label>
+        </div>
+      </div>
+    </ModalBase>
     <div class="progress-bar-section" v-show="isVisible">
       <label class="progressMessage">{{ progressMessage }}</label>
       <div class="progress-bar-group">
         <div  class="progress-bar">
         <ProgressBar :progress="progress" />
-      </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
-  
+
 <script>
 import ProgressBar from './ProgressBar.vue';
+import ModalBase from './modalBase.vue';
+
 export default {
-  name: 'ConverterSection',
+  name: 'FinderVideoSection',
   components:{
     ProgressBar,
+    ModalBase
   },
 
   data(){
     return{
-      title: "Download and use your favorites YouTube videos",
-      subtitle: "Enter your link YouTube Video",
-      progressMessage: "We are finding your video",
+      progressMessage: "We are searching your video",
       progress: 0,
-      isVisible: false
+      isVisible: false,
+      showModal: false,
+      videoFoundTitle: "Oficial Video | this is a example result",
+      internalHeaderMessage: "This is your video, rigth?"
     }
   },
 
@@ -65,49 +77,43 @@ export default {
         }, 1000); // Cada 1 segundo
       }
 
+      if(this.progress == 100){
+        this.openModal();
+      }
+
       console.log("end");
     },
+
+    openModal() {
+      this.showModal = true;
+    },
+
+    closeModal() {
+      this.showModal = false;
+    },
+
+    confirmChange() {
+      this.$emit('changeView', 'DownloadVideoSection');
+      this.closeModal();
+    },
+
   },
 
+  watch: {
+    progress(newVal) {
+      if (newVal === 100) {
+        this.openModal();
+        this.isVisible = false;
+      }
+    },
+  },
 };
 </script>
-  
+
 <style scoped>
-input{
-  font-family: "Outfit", sans-serif; 
-  font-style: normal;
-}
-
-.content-main-container{
-  width: 900px;
-  height: 325px;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /*border: 2px solid #000;*/
-}
-
-.header-section{
+.finder-section{
+  height: 100%;
   width: 100%;
-  height: 100px;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.title{
-  font-size: 40px;
-  font-weight: 600;
-}
-
-.subtitle{
-  font-size: 25px;
-  color: #5e5e5e;
 }
 
 .link-section{
@@ -133,6 +139,8 @@ input{
   height: 40px;
   border: none;
   border-radius: 5px;
+  font-family: "Outfit", sans-serif; 
+  font-style: normal;
 }
 
 .progress-bar-section{
@@ -163,5 +171,25 @@ input{
   height: 100%;
 }
 
+.video-found-section{
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-found-section h2{
+  margin: 0;
+  padding: 0;
+}
+
+.video-found-image-preview{
+  width: 300px;
+  height: 150px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #8f8f8f;
+}
 </style>
-  

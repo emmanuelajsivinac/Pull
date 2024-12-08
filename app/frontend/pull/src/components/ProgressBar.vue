@@ -42,6 +42,5 @@
 .progress-bar {
   height: 100%;
 }
-
 </style>
   
